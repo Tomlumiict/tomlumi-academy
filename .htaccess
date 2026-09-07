@@ -1,0 +1,32 @@
+# Tomlumi Academy - Apache Configuration
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /tomlumi_academy/
+    
+    # Remove .php extension
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([a-zA-Z0-9_-]+)/?$ $1.php [L]
+    
+    # Protect config files
+    RewriteRule ^config/ - [F,L]
+    RewriteRule ^includes/ - [F,L]
+    RewriteRule ^database/ - [F,L]
+    
+    # Allow uploads
+    RewriteRule ^uploads/ - [L]
+    RewriteRule ^assets/ - [L]
+EndIf>
+
+# Disable directory listing
+<FilesMatch "^\.">  
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to sensitive files
+<FilesMatch "\.(sql|db|env|lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
